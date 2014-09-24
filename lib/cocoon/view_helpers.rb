@@ -111,7 +111,7 @@ module Cocoon
     end
 
     def get_partial_path(partial, association)
-      partial ? partial : association.to_s.singularize + "_fields"
+      partial ? partial : association.to_s + "/fields"
     end
 
     private
