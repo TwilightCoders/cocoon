@@ -41,7 +41,7 @@ module Cocoon
 
     # :nodoc:
     def render_association(association, f, new_object, form_name, render_options={}, custom_partial=nil)
-      partial = get_partial_path(custom_partial, association)
+      partial = get_partial_path(custom_partial, new_object)
       locals =  render_options.delete(:locals) || {}
       method_name = f.respond_to?(:semantic_fields_for) ? :semantic_fields_for : (f.respond_to?(:simple_fields_for) ? :simple_fields_for : :fields_for)
       f.send(method_name, association, new_object, {:child_index => "new_#{association}"}.merge(render_options)) do |builder|
@@ -110,8 +110,9 @@ module Cocoon
       assoc ? create_object_on_association(f, association, assoc, force_non_association_create) : create_object_on_non_association(f, association)
     end
 
-    def get_partial_path(partial, association)
-      partial ? partial : association.to_s + "/fields"
+    def get_partial_path(partial, assoc)
+      #
+      partial ? partial : assoc.class.name.pluralize.underscore + '/fields'
     end
 
     private
